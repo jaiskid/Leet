@@ -17,29 +17,41 @@ using namespace std;
 #define PNF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
 #define AS 200001
 #define mod 1000000007
-int trap(vector<int>&height) {
-	int left[height.size()] = {};
-	int right[height.size()] = {};
-	left[0] = height[0];
-	for (int i = 1; i < height.size(); i++) {
-		left[i] = max(height[i], left[i - 1]);
+// int arrayPairSum(vector<int>&nums) {
+// 	int sum = 0;
+// 	for (int i = 0; i < nums.size(); i += 2) {
+// 		sum += nums[i];
+// 	}
+// 	return sum;
+// }
+int arrayPairSum(vector<int>&nums) {
+	vector<int>buckets(200001, 0);
+	for (int i : nums) {
+		++buckets[i + 10000];
 	}
-	right[height.size() - 1] = height[height.size() - 1];
-	for (int i = height.size() - 2; i >= 0; i--) {
-		right[i] = max(height[i], right[i + 1]);
+	int sum = 0, count = 0, i = 0;
+	while (count < nums.size()) {
+		if (buckets[i] == 0) {
+			i++;
+
+		}
+		else {
+			if (count % 2 == 0) {
+				sum += (i - 10000);
+
+			}
+			--buckets[i];
+			++count;
+		}
 	}
-	int ans = 0;
-	for (int i = 1; i < height.size() - 1; i++) {
-		ans += min(left[i], right[i]) - height[i];
-	}
-	return ans;
+	return sum;
 }
 int main() {
 	fastIO
 	int n;
 	cin >> n;
-	vector<int> height;
-	height.resize(n);
-	F(height, n);
-	cout << trap(height);
+	vector<int>nums;
+	nums.resize(n);
+	F(nums, n);
+	cout << arrayPairSum(nums);
 }

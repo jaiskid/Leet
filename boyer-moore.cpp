@@ -17,29 +17,27 @@ using namespace std;
 #define PNF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
 #define AS 200001
 #define mod 1000000007
-int trap(vector<int>&height) {
-	int left[height.size()] = {};
-	int right[height.size()] = {};
-	left[0] = height[0];
-	for (int i = 1; i < height.size(); i++) {
-		left[i] = max(height[i], left[i - 1]);
-	}
-	right[height.size() - 1] = height[height.size() - 1];
-	for (int i = height.size() - 2; i >= 0; i--) {
-		right[i] = max(height[i], right[i + 1]);
-	}
-	int ans = 0;
-	for (int i = 1; i < height.size() - 1; i++) {
-		ans += min(left[i], right[i]) - height[i];
+int majority(vector<int>&nums){
+	int ans=nums[0],cnt=1;
+	for(const auto &i : nums){
+		if(i==ans)
+			++cnt;
+		else{
+			--cnt;
+			if(cnt==0){
+				ans=i;
+				cnt=1;
+			}
+		}
 	}
 	return ans;
 }
-int main() {
+int main(){
 	fastIO
 	int n;
-	cin >> n;
-	vector<int> height;
-	height.resize(n);
-	F(height, n);
-	cout << trap(height);
+	cin>>n;
+	vector<int>nums;
+	nums.resize(n);
+	F(nums,n);
+	cout<<majority(nums);
 }
